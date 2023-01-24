@@ -7,6 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class loadVignettesParser {
     public String loadVignettesParser(ArrayList<MotorwayVignette> vignettes, Vehicle vehicle) {
@@ -24,9 +26,10 @@ public class loadVignettesParser {
                 vignetteJSON.put("motorwayVignetteType",vignette.motorwayVignetteType);
                 vignetteJSON.put("vehicleCategory",vignette.vehicleCategory);
                 vignetteJSON.put("price",vignette.price);
-                vignetteJSON.put("validTo",vignette.validTo);
-                vignetteJSON.put("validFrom",vignette.validFrom);
-                vignetteJSON.put("dateOfPurchase",vignette.dateOfPurchase);
+                vignetteJSON.put("validTo",getValidTo(vignette).toString());
+                vignetteJSON.put("validFrom",vignette.validFrom.toString());
+                vignetteJSON.put("dateOfPurchase",vignette.dateOfPurchase.toString());
+                vignetteJSON.put("isValid", isValid(vignette));
                 vignettesJSON.put(vignetteJSON);
             }
             dto.put("vignettes", vignettesJSON);
@@ -35,5 +38,29 @@ public class loadVignettesParser {
             throw new RuntimeException(e);
         }
         return dto.toString();
+    }
+
+    private boolean isValid(MotorwayVignette vignette){
+        Date today = new Date();
+        return vignette.validFrom.compareTo(today) * today.compareTo(getValidTo(vignette)) >= 0;
+    }
+
+    private Date getValidTo(MotorwayVignette vignette) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(vignette.validFrom);
+        switch(vignette.motorwayVignetteType) {
+            case "10days":
+                c.add(Calendar.DATE, 10);
+                break;
+            case "monthly":
+                c.add(Calendar.MONTH, 1);
+
+                break;
+            case "yearly":
+                c.add(Calendar.YEAR, 1);
+                break;
+            default:break;
+        }
+        return c.getTime();
     }
 }

@@ -27,10 +27,13 @@ public class TollSystemApp implements Presenter, loadVignettesByCarRegistrationN
     private TollSystempersistenceStorage tollSystempersistenceStorage;
     private TollSystemPresenter presenter;
 
-    public TollSystemApp(VehicleRegister vehicleRegister, TollSystempersistenceStorage tollSystempersistenceStorage, TollSystemPresenter presenter) {
-        this.vehicleRegister = vehicleRegister;
+    public TollSystemApp( TollSystempersistenceStorage tollSystempersistenceStorage, TollSystemPresenter presenter) {
         this.tollSystempersistenceStorage = tollSystempersistenceStorage;
         this.presenter = presenter;
+    }
+
+    public void setVehicleRegister(VehicleRegister vehicleRegister) {
+        this.vehicleRegister = vehicleRegister;
     }
 
     @Override
