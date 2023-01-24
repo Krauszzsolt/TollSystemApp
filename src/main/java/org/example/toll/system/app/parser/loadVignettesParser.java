@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class loadVignettesParser {
-    public String loadVignettesParser(ArrayList<MotorwayVignette> vignettes, Vehicle vehicle) {
+    public String parseToResponseModel(ArrayList<MotorwayVignette> vignettes, Vehicle vehicle) {
         JSONArray vignettesJSON = new JSONArray();
         JSONObject vehicleJson = new JSONObject();
         JSONObject dto = new JSONObject();
